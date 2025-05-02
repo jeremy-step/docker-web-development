@@ -1,0 +1,12 @@
+{
+    "name": "cima-alfa/web-project",
+    "description": "Docker skeleton for web development...",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jeremy Stepanek",
+            "email": "contact@sjeremy.dev"
+        }
+    ],
+    "require": {}
+}

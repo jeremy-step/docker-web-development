@@ -5,12 +5,12 @@ services:
         ports:
             - "8000:80"
         volumes:
-            - ./src:/var/www/html
+            - ./application:/var/www/html
     application:
         build:
             dockerfile: ./Docker/php-fpm/Dockerfile
         volumes:
-            - ./src:/var/www/html
+            - ./application:/var/www/html
     database:
         image: mysql:8.4
         volumes:
