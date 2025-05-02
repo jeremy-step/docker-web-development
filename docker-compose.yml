@@ -1,0 +1,36 @@
+services:
+    web-server:
+        build:
+            dockerfile: ./Docker/httpd/Dockerfile
+        ports:
+            - "8000:80"
+        volumes:
+            - ./src:/var/www/html
+    application:
+        build:
+            dockerfile: ./Docker/php-fpm/Dockerfile
+        volumes:
+            - ./src:/var/www/html
+    database:
+        image: mysql:8.4
+        volumes:
+            - mysqldata:/var/lib/mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: application
+            MYSQL_PASSWORD: password
+            MYSQL_DATABASE: application
+    adminer:
+        image: adminer:latest
+        ports:
+            - 8080:8080
+        restart: unless-stopped
+        environment:
+            ADMINER_DEFAULT_SERVER: database
+            ADMINER_PLUGINS: "dark-switcher"
+        depends_on:
+            - database
+
+volumes:
+    mysqldata:
