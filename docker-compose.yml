@@ -2,37 +2,42 @@ services:
     web-server:
         container_name: web-server
         build:
-            dockerfile: ./Docker/httpd/Dockerfile
+            dockerfile: ./.docker/httpd/Dockerfile
         ports:
             - "${FORWARD_SERVER_PORT:-8000}:80"
         volumes:
             - ./application:/var/www/html
     application:
         container_name: application
+        environment:
+            MYSQL_HOST: "database"
+            MYSQL_PORT: "3306"
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            REDIS_HOST: "cache"
+            REDIS_PORT: "6379"
         build:
-            dockerfile: ./Docker/php-fpm/Dockerfile
-            target: development
+            dockerfile: ./.docker/php-fpm/Dockerfile
         volumes:
-            - ./Docker/php-fpm/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+            - ./.docker/php-fpm/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
             - ./application:/var/www/html
-        env_file:
-            - ./.env
-            - ./Docker/.env
-            - ./Docker/php-fpm/.env
         extra_hosts:
             - "host.docker.internal:host-gateway"
     database:
         container_name: database
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
         image: mysql:8.4
-        env_file:
-            - ./.env
-            - ./Docker/.env
-            - ./Docker/mysql/.env
         ports:
             - "${FORWARD_MYSQL_PORT:-3306}:3306"
         volumes:
             - mysqldata:/var/lib/mysql
         restart: unless-stopped
+        command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
     cache:
         container_name: cache
         image: redis:7.4-alpine
@@ -42,13 +47,15 @@ services:
             - redisdata:/data
     adminer:
         container_name: adminer
+        environment:
+            ADMINER_DEFAULT_SERVER: "database:3306"
+            ADMINER_DEFAULT_USER: ${MYSQL_USER}
+            ADMINER_DEFAULT_DATABASE: ${MYSQL_DATABASE}
+            ADMINER_PLUGINS: ${ADMINER_PLUGINS:-dark-switcher}
         image: adminer:latest
         ports:
             - "${FORWARD_ADMINER_PORT:-8080}:8080"
         restart: unless-stopped
-        environment:
-            ADMINER_DEFAULT_SERVER: "database:3306"
-            ADMINER_PLUGINS: "dark-switcher"
         depends_on:
             - database
 

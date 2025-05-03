@@ -2,3 +2,8 @@
 .vscode
 node_modules
 vendor
+/.docker
+!/.docker/*/conf
+/.dockerignore
+/docker-compose.yml
+/docker-compose.yaml
