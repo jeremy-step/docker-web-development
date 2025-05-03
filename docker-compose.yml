@@ -11,15 +11,21 @@ services:
         container_name: application
         build:
             dockerfile: ./Docker/php-fpm/Dockerfile
+            target: development
         volumes:
+            - ./Docker/php-fpm/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
             - ./application:/var/www/html
         env_file:
+            - ./.env
             - ./Docker/.env
             - ./Docker/php-fpm/.env
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
     database:
         container_name: database
         image: mysql:8.4
         env_file:
+            - ./.env
             - ./Docker/.env
             - ./Docker/mysql/.env
         ports:
