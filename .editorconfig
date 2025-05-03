@@ -16,3 +16,4 @@ indent_size = 2
 
 [docker-compose.{yml,yaml}]
 indent_size = 4
+# 

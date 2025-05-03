@@ -18,3 +18,4 @@ ENV XDEBUG_MODE=off
 
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
+    
