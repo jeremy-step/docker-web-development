@@ -13,5 +13,3 @@
 -   `application` (PHP 8.4 FPM Alpine)
 -   `database` (MySQL 8.4)
 -   `adminer` (Adminer)
-
-#
