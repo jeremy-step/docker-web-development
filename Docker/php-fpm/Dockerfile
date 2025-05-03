@@ -14,7 +14,5 @@ RUN curl --silent --show-error https://getcomposer.org/installer | php -- --inst
 # Development only
 FROM application AS development
 
-ENV XDEBUG_MODE=off
-
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
