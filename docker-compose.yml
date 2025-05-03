@@ -1,36 +1,51 @@
 services:
     web-server:
+        container_name: web-server
         build:
             dockerfile: ./Docker/httpd/Dockerfile
         ports:
-            - "8000:80"
+            - "${FORWARD_SERVER_PORT:-8000}:80"
         volumes:
             - ./application:/var/www/html
     application:
+        container_name: application
         build:
             dockerfile: ./Docker/php-fpm/Dockerfile
         volumes:
             - ./application:/var/www/html
+        env_file:
+            - ./Docker/.env
+            - ./Docker/php-fpm/.env
     database:
+        container_name: database
         image: mysql:8.4
+        env_file:
+            - ./Docker/.env
+            - ./Docker/mysql/.env
+        ports:
+            - "${FORWARD_MYSQL_PORT:-3306}:3306"
         volumes:
             - mysqldata:/var/lib/mysql
         restart: unless-stopped
-        environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_USER: application
-            MYSQL_PASSWORD: password
-            MYSQL_DATABASE: application
+    cache:
+        container_name: cache
+        image: redis:7.4-alpine
+        ports:
+            - "${FORWARD_REDIS_PORT:-6379}:6379"
+        volumes:
+            - redisdata:/data
     adminer:
+        container_name: adminer
         image: adminer:latest
         ports:
-            - 8080:8080
+            - "${FORWARD_ADMINER_PORT:-8080}:8080"
         restart: unless-stopped
         environment:
-            ADMINER_DEFAULT_SERVER: database
+            ADMINER_DEFAULT_SERVER: "database:3306"
             ADMINER_PLUGINS: "dark-switcher"
         depends_on:
             - database
 
 volumes:
     mysqldata:
+    redisdata:

@@ -7,5 +7,4 @@ log
 .phpunit.cache
 .phpunit.result.cache
 .env
-.env.backup
 composer.lock

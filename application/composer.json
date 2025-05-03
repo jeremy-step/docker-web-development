@@ -9,7 +9,12 @@
             "email": "contact@sjeremy.dev"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "^8.4",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "predis/predis": "^2.4"
+    },
     "require-dev": {},
     "config": {
         "optimize-autoloader": true,
