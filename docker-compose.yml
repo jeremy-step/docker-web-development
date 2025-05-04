@@ -10,6 +10,8 @@ services:
     application:
         container_name: application
         environment:
+            MAILPIT_HOST: "mail"
+            MAILPIT_PORT: "1025"
             MYSQL_HOST: "database"
             MYSQL_PORT: "3306"
             MYSQL_USER: ${MYSQL_USER}
@@ -24,6 +26,19 @@ services:
             - ./application:/var/www/html
         extra_hosts:
             - "host.docker.internal:host-gateway"
+        depends_on:
+            - web-server
+    mail:
+        container_name: mail
+        image: axllent/mailpit:latest
+        ports:
+            - "${FORWARD_MAILPIT_UI_PORT:-8025}:8025"
+            - "${FORWARD_MAILPIT_SMTP_PORT:-1025}:1025"
+        volumes:
+            - mailpitdata:/data
+        restart: unless-stopped
+        depends_on:
+            - application
     database:
         container_name: database
         environment:
@@ -45,6 +60,7 @@ services:
             - "${FORWARD_REDIS_PORT:-6379}:6379"
         volumes:
             - redisdata:/data
+        restart: unless-stopped
     adminer:
         container_name: adminer
         environment:
@@ -60,5 +76,6 @@ services:
             - database
 
 volumes:
+    mailpitdata:
     mysqldata:
     redisdata:
