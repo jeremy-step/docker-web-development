@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine AS application
+FROM php:8.4-fpm-alpine AS base
 
 WORKDIR /var/www/html/
 
@@ -13,3 +13,7 @@ RUN curl --silent --show-error https://getcomposer.org/installer | php -- --inst
 
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
+
+FROM base AS with-node
+
+RUN apk add --update nodejs-current pnpm

@@ -10,6 +10,8 @@ services:
     application:
         container_name: application
         environment:
+            VITE_HOST: "application"
+            VITE_PORT: "5173"
             MAILPIT_HOST: "mail"
             MAILPIT_PORT: "1025"
             MYSQL_HOST: "database"
@@ -21,6 +23,9 @@ services:
             REDIS_PORT: "6379"
         build:
             dockerfile: ./.docker/php-fpm/Dockerfile
+            target: with-node
+        ports:
+            - "${FORWARD_VITE_PORT:-5173}:5173"
         volumes:
             - ./.docker/php-fpm/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
             - ./application:/var/www/html
