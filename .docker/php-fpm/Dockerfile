@@ -2,6 +2,10 @@ FROM php:8.4-fpm-alpine AS base
 
 WORKDIR /var/www/html/
 
+RUN mkdir "/usr/local/logs" && chmod 777 "/usr/local/logs"
+
+COPY ./.docker/php-fpm/conf/* /usr/local/etc/php/conf.d
+
 RUN apk add --update linux-headers && apk add --no-cache $PHPIZE_DEPS && \
     docker-php-ext-install pdo pdo_mysql
 

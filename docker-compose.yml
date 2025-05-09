@@ -27,6 +27,7 @@ services:
         ports:
             - "${FORWARD_VITE_PORT:-5173}:5173"
         volumes:
+            - ./.docker/php-fpm/conf/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
             - ./.docker/php-fpm/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
             - ./application:/var/www/html
         extra_hosts:
@@ -57,7 +58,7 @@ services:
         volumes:
             - mysqldata:/var/lib/mysql
         restart: unless-stopped
-        command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+        command: [ "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci" ]
     cache:
         container_name: cache
         image: redis:7.4-alpine
