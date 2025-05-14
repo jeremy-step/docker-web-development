@@ -4,10 +4,13 @@
 
 ## Commands
 
-- `docker compose --env-file=./.docker/.env up -d [--build]` (Start up containers - build as needed)
-- `docker compose --env-file=./.docker/.env stop` (Stop all containers)
-- `docker compose --env-file=./.docker/.env down` (Remove all containers)
-- `docker exec -it <container> sh` (Access container shell)
+| Command                               | Description                 |
+|---------------------------------------|-----------------------------|
+| `app up [<container>] [-d] [--build]` | Start / Build container(s). |
+| `app down [<container>] [-v]`         | Remove container(s).        |
+| `app stop [<container>]`              | Stop container(s).          |
+| `app restart [<container>]`           | Restart container(s).       |
+| `app sh <container>`                  | Access container shell.     |
 
 ## Containers
 
