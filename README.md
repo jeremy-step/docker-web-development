@@ -17,3 +17,20 @@
 - `database` (MySQL 8.4)
 - `cache` (Redis 7.4 Alpine)
 - `adminer` (Adminer Latest)
+
+## Create a new project from this template repository
+
+```shell
+gh repo create my-new-project --template cima-alfa/docker-web-development --clone [--private]
+```
+
+or just clone it without creating a new repository...
+
+```shell
+gh repo clone cima-alfa/docker-web-development my-new-project
+
+or
+
+git clone https://github.com/cima-alfa/docker-web-development.git my-new-project
+```
+
