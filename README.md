@@ -4,6 +4,8 @@
 
 ## Commands
 
+A simple shell script is included, located in the `/bin` directory (`./bin/app ...`):
+
 | Command                               | Description                 |
 |---------------------------------------|-----------------------------|
 | `app up [<container>] [-d] [--build]` | Start / Build container(s). |
