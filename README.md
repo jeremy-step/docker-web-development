@@ -4,7 +4,7 @@
 
 ## Commands
 
-A simple shell script is included, located in the `/bin` directory (`./bin/app ...`):
+A simple shell script is included, located in the `/bin` directory (`./bin/app ...`), to run basic Docker CLI commands:
 
 | Command                               | Description                 |
 |---------------------------------------|-----------------------------|
