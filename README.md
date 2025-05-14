@@ -4,14 +4,16 @@
 
 ## Commands
 
-- `docker compose up -d [--build]` (Start up containers - build as needed)
-- `docker compose stop` (Stop all containers)
-- `docker compose down` (Remove all containers)
+- `docker compose --env-file=./.docker/.env up -d [--build]` (Start up containers - build as needed)
+- `docker compose --env-file=./.docker/.env stop` (Stop all containers)
+- `docker compose --env-file=./.docker/.env down` (Remove all containers)
 - `docker exec -it <container> sh` (Access container shell)
 
 ## Containers
 
 - `web-server` (Apache 2 Alpine)
-- `application` (PHP 8.4 FPM Alpine)
+- `application` (PHP 8.4 FPM Alpine, Node.js Latest - Optional)
+- `mail` (Mailpint Latest)
 - `database` (MySQL 8.4)
-- `adminer` (Adminer)
+- `cache` (Redis 7.4 Alpine)
+- `adminer` (Adminer Latest)
