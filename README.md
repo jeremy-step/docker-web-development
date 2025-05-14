@@ -7,9 +7,9 @@
 | Command                               | Description                 |
 |---------------------------------------|-----------------------------|
 | `app up [<container>] [-d] [--build]` | Start / Build container(s). |
-| `app down [<container>] [-v]`         | Remove container(s).        |
 | `app stop [<container>]`              | Stop container(s).          |
 | `app restart [<container>]`           | Restart container(s).       |
+| `app down [<container>] [-v]`         | Remove container(s).        |
 | `app sh <container>`                  | Access container shell.     |
 
 ## Containers
