@@ -2,32 +2,6 @@
 
 # Docker Web Dev Preset
 
-## Commands
-
-A simple shell script is included, located in the `/bin` directory (`./bin/app ...`), to run basic Docker CLI commands:
-
-| Command                               | Description                 |
-|---------------------------------------|-----------------------------|
-| `app up [<container>] [-d] [--build]` | Start / Build container(s). |
-| `app stop [<container>]`              | Stop container(s).          |
-| `app restart [<container>]`           | Restart container(s).       |
-| `app down [<container>] [-v]`         | Remove container(s).        |
-| `app sh <container>`                  | Access container shell.     |
-
-For example:
-
-- `app up ...` executes `docker compose --env-file=./.docker/.env up ...`
-- `app sh <container>` executes `docker exec -it <container> sh`
-
-## Containers
-
-- `web-server` (Apache 2 Alpine)
-- `application` (PHP 8.4 FPM Alpine, Node.js Latest - Optional)
-- `mail` (Mailpint Latest)
-- `database` (MySQL 8.4)
-- `cache` (Redis 7.4 Alpine)
-- `adminer` (Adminer Latest)
-
 ## Create a new project from this template repository
 
 ```shell
@@ -46,3 +20,28 @@ or
 git clone https://github.com/cima-alfa/docker-web-development.git my-new-project
 ```
 
+## Commands
+
+A simple shell script is included, located in the `/bin` directory (`./bin/app ...`), to run basic Docker CLI commands:
+
+| Command                               | Description                 |
+|---------------------------------------|-----------------------------|
+| `app up [<container>] [-d] [--build]` | Start / Build container(s). |
+| `app stop [<container>]`              | Stop container(s).          |
+| `app restart [<container>]`           | Restart container(s).       |
+| `app down [<container>] [-v]`         | Remove container(s).        |
+| `app sh <container>`                  | Access container shell.     |
+
+For example:
+
+- `app up ...` executes `docker compose --env-file=./.docker/.env up ...`
+- `app sh <container>` executes `docker exec -it <container> sh`
+
+### Containers
+
+- `web-server` (Apache 2 Alpine)
+- `application` (PHP 8.4 FPM Alpine, Node.js Latest - Optional)
+- `mail` (Mailpint Latest)
+- `database` (MySQL 8.4)
+- `cache` (Redis 7.4 Alpine)
+- `adminer` (Adminer Latest)
