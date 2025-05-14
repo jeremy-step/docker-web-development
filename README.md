@@ -28,9 +28,11 @@ or just clone it without creating a new repository...
 
 ```shell
 gh repo clone cima-alfa/docker-web-development my-new-project
+```
 
 or
 
+```shell
 git clone https://github.com/cima-alfa/docker-web-development.git my-new-project
 ```
 
