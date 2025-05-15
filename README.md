@@ -37,7 +37,7 @@ For example:
 - `app up ...` executes `docker compose --env-file=./.docker/.env up ...`
 - `app sh <container>` executes `docker exec -it <container> sh`
 
-### Executing the `app` shell script tip
+### TIP: Executing the `app` shell script
 
 Instead of writing `bin/app ...` or `../bin/app ...`, you can create a global alias / function that executes the script for the current project.
 
