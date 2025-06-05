@@ -1,5 +1,9 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/cima-alfa/docker-web-development)
 
+# Outdated
+
+Now that I am actually using this in a project, there are a few issues with the way this was originally setup.  I'll add the changes when I can.
+
 # Docker Web Dev Preset
 
 ## Create a new project from this template repository
