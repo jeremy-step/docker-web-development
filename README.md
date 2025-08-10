@@ -1,27 +1,23 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/jeremy-step/docker-web-development)
 
-# Outdated
-
-Now that I am actually using this in a project, there are a few issues with the way this was originally setup.  I'll add the changes when I can.
-
 # Docker Web Dev Preset
 
 ## Create a new project from this template repository
 
 ```shell
-gh repo create my-new-project --template cima-alfa/docker-web-development --clone [--private]
+gh repo create my-new-project --template jeremy-step/docker-web-development --clone [--private]
 ```
 
 or just clone it without creating a new repository...
 
 ```shell
-gh repo clone cima-alfa/docker-web-development my-new-project
+gh repo clone jeremy-step/docker-web-development my-new-project
 ```
 
 or
 
 ```shell
-git clone https://github.com/cima-alfa/docker-web-development.git my-new-project
+git clone https://github.com/jeremy-step/docker-web-development.git my-new-project
 ```
 
 ## Commands
@@ -29,7 +25,7 @@ git clone https://github.com/cima-alfa/docker-web-development.git my-new-project
 A simple shell script is included, located in the `/bin` directory (`./bin/app ...`), to run basic Docker CLI commands:
 
 | Command                               | Description                 |
-|---------------------------------------|-----------------------------|
+| ------------------------------------- | --------------------------- |
 | `app up [<container>] [-d] [--build]` | Start / Build container(s). |
 | `app stop [<container>]`              | Stop container(s).          |
 | `app restart [<container>]`           | Restart container(s).       |
@@ -38,8 +34,8 @@ A simple shell script is included, located in the `/bin` directory (`./bin/app .
 
 For example:
 
-- `app up ...` executes `docker compose --env-file=./.docker/.env up ...`
-- `app sh <container>` executes `docker exec -it <container> sh`
+-   `app up ...` executes `docker compose --env-file=./.docker/.env up ...`
+-   `app sh <container>` executes `docker exec -it <container> sh`
 
 ### TIP: Executing the `app` shell script
 
@@ -58,7 +54,7 @@ function app()
                 return
         fi
 
-        cmd="${project%/}/bin/app"
+        cmd="${project%/}/.docker/bin/app"
 
         eval "$cmd ${@}"
 
@@ -68,15 +64,15 @@ function app()
 export -f app
 ```
 
-Now, if we execute the `app ...` command, it will automatically find the correct `~/projects/<current-project>/bin/app` shell script.
+Now, if we execute the `app ...` command, it will automatically find the correct `~/projects/<current-project>/.docker/bin/app` shell script.
 
 Don't forget to modify the path to your projects directory based on your structure. Of course, if the `app` function name is too generic, you can change it to your liking.
 
 ### Containers
 
-- `web-server` (Apache 2 Alpine)
-- `application` (PHP 8.4 FPM Alpine, Node.js Latest - Optional)
-- `mail` (Mailpit Latest)
-- `database` (MySQL 8.4)
-- `cache` (Redis 7.4 Alpine)
-- `adminer` (Adminer Latest)
+-   `web-server` (Apache 2 Alpine)
+-   `application` (PHP 8.4 FPM Alpine, Node.js Latest - Optional)
+-   `mail` (Mailpit Latest)
+-   `database` (MySQL 8.4)
+-   `cache` (Redis 7.4 Alpine)
+-   `adminer` (Adminer Latest)
