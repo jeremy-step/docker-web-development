@@ -1,5 +1,5 @@
 {
-    "name": "@cima-alfa/web-project",
+    "name": "@jeremy-step/web-project",
     "description": "Docker skeleton for web development...",
     "private": true,
     "type": "module",
