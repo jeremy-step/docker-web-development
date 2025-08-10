@@ -1,0 +1,123 @@
+#!/bin/bash
+
+usage=$(cat << EOT
+
+Usage:
+
+app up [<container>] [-d] [--build]         Start / Build container(s).
+app down [<container>] [-v]                 Remove container(s).
+app stop [<container>]                      Stop container(s).
+app restart [<container>]                   Restart container(s).
+app sh [--user root] [options] <container>  Access container shell.
+                                                - The default user is: "root".
+                                                - The default user for the "application" container is: "application".
+app composer [args]                         Use composer.
+app c        [args]                         Alias for: "app composer [args]"
+app pnpm [args]                             Use pnpm (if installed).
+app pm   [args]                             Alias for: "app pnpm [args]"
+
+EOT
+)
+
+getUsage()
+{
+    if [ "$NO_COLOR" != "" ] && [ "$FORCE_COLOR" == "" ]; then
+        echo "$usage"
+
+        return
+    fi
+
+    colored="$usage"
+
+    colored=$(echo "$colored" | sed -E -e s/Usage:/`printf "\e[1;33m"`Usage:`printf "\e[0m"`/g)
+    colored=$(echo "$colored" | sed -E -e s/\([^' ']+\)' '\(' '*\\[.+\\]\)?' '\(.+\)/`printf "\e[1;32m"`'\1'`printf "\e[0m"`' '`printf "\e[1;90m"`'\2'`printf "\e[0m"`' \3'/g)
+
+    echo "$colored"
+}
+
+if [ $# -eq 0 ]; then
+    getUsage
+
+    printf "\n"
+
+    exit 0
+fi
+
+source <(grep = $(dirname "$0")/../.env | sed 's/ *= */=/g')
+
+composeOptions="-f=$(dirname "$0")/../../docker-compose.yml --env-file=$(dirname "$0")/../.env"
+
+containerCommands=(sh composer c pnpm pm)
+container="__undefined__"
+
+for command in "${containerCommands[@]}"; do
+    if [ "$command" == "$1" ]; then
+        service="application"
+
+        if [ "$command" == "sh" ]; then
+            service="${@:${#@}}"
+        fi
+
+        container=$(docker compose $composeOptions ps --format '{{.Name}}' "$service")
+
+        if [ "$container" == "" ]; then
+            exit 1
+        fi
+
+        break
+    fi
+done
+
+command="$1"
+
+if [ "$1" == "start" ]; then
+    command="up"
+fi
+
+if [ "$command" == "sh" ]; then
+    if [ "${*:${#@}}" != "application" ] || [[ "${*:2:$#-2}" == *"--user"* ]]; then
+        docker exec -it "${@:2:$#-2}" "$container" sh
+
+        exit 0
+    fi
+
+    docker exec -it "${@:2:$#-2}" --user application  "$container" sh
+
+    exit 0
+fi
+
+if [ "$command" == "c" ] || [ "$command" == "composer" ]; then
+    docker exec -it --user application -e XDEBUG_MODE=off  "$container" composer "${@:2}"
+
+    exit 0
+fi
+
+if [ "$command" == "pm" ] || [ "$command" == "pnpm" ]; then
+    docker exec -it --user application  "$container" pnpm "${@:2}"
+
+    exit 0
+fi
+
+if [ "$USE_SSL" == "true" ] && [ "$command" == "up" ] && [[ "${*:2}" == *"--build"* ]]; then
+    options=$(echo "${@:2}" | sed s/"--build"//)
+    buildOptions=$(echo $options | sed s/"-d"//)
+    
+    # @TODO Filter build and create options, will throw error if unsupported up options are provided
+    docker compose $composeOptions build $buildOptions
+    docker compose $composeOptions create $buildOptions
+
+    if [ ! -d "$(dirname "$0")/../../.ssl" ]; then
+        mkdir $(dirname "$0")/../../.ssl
+    fi
+
+    docker compose $composeOptions cp web-server:/usr/local/apache2/conf/server.crt $(dirname "$0")/../../.ssl/server.crt
+    docker compose $composeOptions cp web-server:/usr/local/apache2/conf/server.key $(dirname "$0")/../../.ssl/server.key
+
+    options=$(echo $options | sed s/"--no-cache"//)
+
+    docker compose $composeOptions up $options
+
+    exit 0
+fi
+
+docker compose $composeOptions "$command" "${@:2}"

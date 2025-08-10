@@ -1,0 +1,8 @@
+Exclude directories in volume mounting by replacing them with an empty readonly directory...
+Reference the parent directory of this file.
+
+For example:
+
+service:
+    volumes:
+        - ./.docker/mount-exclude/directory:/var/www/html/.docker:ro

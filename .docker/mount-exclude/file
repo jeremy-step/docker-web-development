@@ -1,0 +1,8 @@
+Exclude file in volume mounting by replacing them with an empty readonly file...
+Reference this file.
+
+For example:
+
+service:
+    volumes:
+        - ./.docker/mount-exclude/file:/var/www/html/docker-compose.yml:ro
