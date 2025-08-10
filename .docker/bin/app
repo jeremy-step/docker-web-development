@@ -5,9 +5,9 @@ usage=$(cat << EOT
 Usage:
 
 app up [<container>] [-d] [--build]         Start / Build container(s).
-app down [<container>] [-v]                 Remove container(s).
 app stop [<container>]                      Stop container(s).
 app restart [<container>]                   Restart container(s).
+app down [<container>] [-v]                 Remove container(s).
 app sh [--user root] [options] <container>  Access container shell.
                                                 - The default user is: "root".
                                                 - The default user for the "application" container is: "application".
