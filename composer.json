@@ -1,12 +1,13 @@
 {
-    "name": "cima-alfa/web-project",
+    "name": "jeremy-step/web-project",
     "description": "Docker skeleton for web development...",
     "type": "project",
     "license": "MIT",
     "authors": [
         {
             "name": "Jeremy Stepanek",
-            "email": "contact@sjeremy.dev"
+            "email": "contact@sjeremy.dev",
+            "homepage": "https://sjeremy.dev"
         }
     ],
     "require": {
@@ -16,11 +17,16 @@
         "predis/predis": "^2.4"
     },
     "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "WebProject\\": "src/"
+        }
+    },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
