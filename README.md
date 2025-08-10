@@ -24,13 +24,17 @@ git clone https://github.com/jeremy-step/docker-web-development.git my-new-proje
 
 A simple shell script is included, located in the `/bin` directory (`./bin/app ...`), to run basic Docker CLI commands:
 
-| Command                               | Description                 |
-| ------------------------------------- | --------------------------- |
-| `app up [<container>] [-d] [--build]` | Start / Build container(s). |
-| `app stop [<container>]`              | Stop container(s).          |
-| `app restart [<container>]`           | Restart container(s).       |
-| `app down [<container>] [-v]`         | Remove container(s).        |
-| `app sh <container>`                  | Access container shell.     |
+| Command                                      | Description                                                                                                                                        |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app up [<container>] [-d] [--build]`        | Start / Build container(s).                                                                                                                        |
+| `app stop [<container>]`                     | Stop container(s).                                                                                                                                 |
+| `app restart [<container>]`                  | Restart container(s).                                                                                                                              |
+| `app down [<container>] [-v]`                | Remove container(s).                                                                                                                               |
+| `app sh [--user root] [options] <container>` | Access container shell. <ul><li>The default user is: "root".</li><li>The default user for the "application" container is: "application".</li></ul> |
+| `app composer [args]`                        | Use composer.                                                                                                                                      |
+| `app c [args]`                               | Alias for: "app composer [args]"                                                                                                                   |
+| `app pnpm [args]`                            | Use pnpm (if installed).                                                                                                                           |
+| `app pm [args]`                              | Alias for: "app pnpm [args]"                                                                                                                       |
 
 For example:
 
