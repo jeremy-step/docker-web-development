@@ -74,9 +74,9 @@ Don't forget to modify the path to your projects directory based on your structu
 
 ### Containers
 
--   `web-server` (Apache 2 Alpine)
--   `application` (PHP 8.4 FPM Alpine, Node.js Latest - Optional)
--   `mail` (Mailpit Latest)
--   `database` (MySQL 8.4)
--   `cache` (Redis 7.4 Alpine)
--   `adminer` (Adminer Latest)
+-   `web-server` (Apache 2.4 Alpine)
+-   `application` (PHP 8.5 FPM Alpine, Node.js 24.14 - Optional)
+-   `mail` (Mailpit v1.29)
+-   `database` (MySQL 9.6)
+-   `cache` (Redis 8.6 Alpine)
+-   `adminer` (Adminer 5.4)
