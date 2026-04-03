@@ -5,6 +5,9 @@
     "type": "module",
     "license": "MIT",
     "author": "Jeremy Stepanek",
+    "engines": {
+        "pnpm": "^10.24.0"
+    }
     "scripts": {},
     "dependencies": {},
     "devDependencies": {}
