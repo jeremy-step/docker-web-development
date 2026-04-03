@@ -1,4 +1,10 @@
-<?php /** @noinspection ALL */
+<?php
+
+declare(strict_types=1);
+
+if (!class_exists('Adminer\Adminer') && file_exists(__DIR__ . '/.adminer.php')) {
+    require_once __DIR__ . '/.adminer.php';
+}
 
 /**
  * Prefills the login form with the ADMINER_DEFAULT_* environment variables. Password less login supported for default user.
@@ -8,8 +14,8 @@
  */
 class LoginDefaultCredentials extends Adminer\Plugin
 {
-    private $adminer;
-    private $fields;
+    private Adminer\Adminer $adminer;
+    private array $fields;
 
     public function __construct()
     {
@@ -19,7 +25,7 @@ class LoginDefaultCredentials extends Adminer\Plugin
         $_ENV['ADMINER_DEFAULT_PASSWORD'] ??= null;
         $_ENV['ADMINER_DEFAULT_DATABASE'] ??= null;
 
-        $this->adminer = new Adminer\Adminer;
+        $this->adminer = new Adminer\Adminer();
         $this->fields = [
             'server' => $_ENV['ADMINER_DEFAULT_SERVER'],
             'username' => $_ENV['ADMINER_DEFAULT_USER'],
@@ -27,7 +33,7 @@ class LoginDefaultCredentials extends Adminer\Plugin
         ];
     }
 
-    public function credentials()
+    public function credentials(): array
     {
         return [
             Adminer\SERVER,
@@ -36,14 +42,14 @@ class LoginDefaultCredentials extends Adminer\Plugin
         ];
     }
 
-    public function login($login, $password)
+    public function login(string $login, string $password)
     {
         if ($login === $_ENV['ADMINER_DEFAULT_USER'] && $password === '') {
             return true;
         }
     }
 
-    public function loginFormField(...$args)
+    public function loginFormField(string ...$args): string
     {
         $fields = $this->fields;
 
@@ -65,4 +71,4 @@ class LoginDefaultCredentials extends Adminer\Plugin
     }
 }
 
-return new LoginDefaultCredentials;
+return new LoginDefaultCredentials();
