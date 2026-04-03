@@ -10,17 +10,19 @@ services:
             - "${FORWARD_SERVER_PORT_SSL:-8443}:443"
         volumes:
             - ./.docker/mount-exclude/directory:/var/www/html/.docker:ro
-            - ./.docker/mount-exclude/file:/var/www/html/docker-compose.yml:ro
+            - ./.docker/mount-exclude/directory/file:/var/www/html/docker-compose.yml:ro
             - ./:/var/www/html
     application:
         environment:
             MAILPIT_HOST: "mail"
             MAILPIT_PORT: "1025"
+            MAILPIT_UI_PORT: ${FORWARD_MAILPIT_UI_PORT:-8025}
             MYSQL_HOST: "database"
             MYSQL_PORT: "3306"
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
+            ADMINER_PORT: ${FORWARD_ADMINER_PORT:-8080}
             REDIS_HOST: "cache"
             REDIS_PORT: "6379"
         build:
@@ -35,14 +37,16 @@ services:
             - ./.docker/src/php-fpm/conf/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
             - ./.docker/src/php-fpm/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
             - ./.docker/mount-exclude/directory:/var/www/html/.docker:ro
-            - ./.docker/mount-exclude/file:/var/www/html/docker-compose.yml:ro
+            - ./.docker/mount-exclude/directory/file:/var/www/html/docker-compose.yml:ro
             - ./:/var/www/html
         extra_hosts:
             - "host.docker.internal:host-gateway"
         depends_on:
             - web-server
     mail:
-        image: axllent/mailpit:latest
+        environment:
+            MP_DATABASE: "/data/mailpit.db"
+        image: axllent/mailpit:v1.29.5
         ports:
             - "${FORWARD_MAILPIT_UI_PORT:-8025}:8025"
             - "${FORWARD_MAILPIT_SMTP_PORT:-1025}:1025"
@@ -54,14 +58,15 @@ services:
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
-        image: mysql:8.4
+            MYSQL_ROOT_HOST: "%"
+        image: mysql:9.6.0
         ports:
             - "${FORWARD_MYSQL_PORT:-3306}:3306"
         volumes:
             - mysqldata:/var/lib/mysql
         command: [ "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci" ]
     cache:
-        image: redis:7.4-alpine
+        image: redis:8.6.2-alpine
         ports:
             - "${FORWARD_REDIS_PORT:-6379}:6379"
         volumes:
@@ -73,8 +78,8 @@ services:
             ADMINER_DEFAULT_USER: ${MYSQL_USER}
             ADMINER_DEFAULT_DATABASE: ${MYSQL_DATABASE}
             ADMINER_DEFAULT_PASSWORD: ${MYSQL_PASSWORD}
-            ADMINER_PLUGINS: ${ADMINER_PLUGINS:-dark-switcher prism table-indexes-structure table-structure}
-        image: adminer:latest
+            ADMINER_PLUGINS: ${ADMINER_PLUGINS:-dark-switcher highlight-prism table-indexes-structure table-structure}
+        image: adminer:5.4.2
         ports:
             - "${FORWARD_ADMINER_PORT:-8080}:8080"
         volumes:

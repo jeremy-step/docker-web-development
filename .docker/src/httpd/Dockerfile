@@ -1,6 +1,6 @@
 ARG USE_SSL="false"
 
-FROM httpd:2.4-alpine AS ssl-false
+FROM httpd:2.4.66-alpine AS ssl-false
 
 ARG SERVER_NAME
 

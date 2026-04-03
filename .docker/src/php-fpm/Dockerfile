@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine AS base
+FROM php:8.5.4-fpm-alpine AS base
 
 ARG GID
 ARG UID
@@ -7,9 +7,8 @@ ENV COMPOSER_ALLOW_SUPERUSER=0
 
 WORKDIR /var/www/html/
 
-COPY ./.docker/src/php-fpm/conf/* /usr/local/etc/php/conf.d
-
-RUN addgroup -g ${GID} --system application && \
+RUN apk add --no-cache git && \
+    addgroup -g ${GID} --system application && \
     adduser -G application --system -D -s /bin/sh -u ${UID} application && \
     sed -i "s/user = www-data/user = application/g" /usr/local/etc/php-fpm.d/www.conf && \
     sed -i "s/group = www-data/group = application/g" /usr/local/etc/php-fpm.d/www.conf && \
@@ -19,8 +18,10 @@ RUN addgroup -g ${GID} --system application && \
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions pcov pcntl bcmath pdo gd intl xdebug
+RUN install-php-extensions pcov pcntl bcmath pdo pdo_mysql gd intl xdebug
+
+COPY ./.docker/src/php-fpm/conf/* /usr/local/etc/php/conf.d
 
 FROM base AS with-node
 
-RUN apk add --update nodejs-current pnpm
+RUN apk add --update nodejs=24.14.1-r0 pnpm
