@@ -11,6 +11,8 @@ services:
         volumes:
             - ./.docker/mount-exclude/directory:/var/www/html/.docker:ro
             - ./.docker/mount-exclude/directory/file:/var/www/html/docker-compose.yml:ro
+            - ./.docker/mount-exclude/directory:/var/www/html/.git:ro
+            - ./.docker/mount-exclude/directory:/var/www/html/.vscode:ro
             - ./:/var/www/html
     application:
         environment:
@@ -38,6 +40,8 @@ services:
             - ./.docker/src/php-fpm/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
             - ./.docker/mount-exclude/directory:/var/www/html/.docker:ro
             - ./.docker/mount-exclude/directory/file:/var/www/html/docker-compose.yml:ro
+            - ./.docker/mount-exclude/directory:/var/www/html/.git:ro
+            - ./.docker/mount-exclude/directory:/var/www/html/.vscode:ro
             - ./:/var/www/html
         extra_hosts:
             - "host.docker.internal:host-gateway"
