@@ -22,61 +22,68 @@ git clone https://github.com/jeremy-step/docker-web-development.git my-new-proje
 
 ## Commands
 
-A simple shell script is included, located in the `/bin` directory (`./bin/app ...`), to run basic Docker CLI commands:
+`helm` is a simple shell script located in the `.docker/bin` directory, to run basic Docker CLI commands:
 
-| Command                                      | Description                                                                                                                                        |
-| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `app up [<container>] [-d] [--build]`        | Start / Build container(s).                                                                                                                        |
-| `app stop [<container>]`                     | Stop container(s).                                                                                                                                 |
-| `app restart [<container>]`                  | Restart container(s).                                                                                                                              |
-| `app down [<container>] [-v]`                | Remove container(s).                                                                                                                               |
-| `app sh [--user root] [options] <container>` | Access container shell. <ul><li>The default user is: "root".</li><li>The default user for the "application" container is: "application".</li></ul> |
-| `app composer [args]`                        | Use composer.                                                                                                                                      |
-| `app c [args]`                               | Alias for: "app composer [args]"                                                                                                                   |
-| `app pnpm [args]`                            | Use pnpm (if installed).                                                                                                                           |
-| `app pm [args]`                              | Alias for: "app pnpm [args]"                                                                                                                       |
+| Command                                       | Description                                                                                                                                        |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `helm up [<container>] [-d] [--build]`        | Start / Build container(s).                                                                                                                        |
+| `helm stop [<container>]`                     | Stop container(s).                                                                                                                                 |
+| `helm restart [<container>]`                  | Restart container(s).                                                                                                                              |
+| `helm down [<container>] [-v]`                | Remove container(s).                                                                                                                               |
+| `helm sh [--user root] [options] <container>` | Access container shell. <ul><li>The default user is: "root".</li><li>The default user for the "application" container is: "application".</li></ul> |
+| `helm composer [args]`                        | Use composer.                                                                                                                                      |
+| `helm c [args]`                               | Alias for: "helm composer [args]"                                                                                                                  |
+| `helm pnpm [args]`                            | Use pnpm (if installed).                                                                                                                           |
+| `helm pm [args]`                              | Alias for: "helm pnpm [args]"                                                                                                                      |
 
 For example:
 
--   `app up ...` executes `docker compose --env-file=./.docker/.env up ...`
--   `app sh <container>` executes `docker exec -it <container> sh`
+-   `helm up ...` executes `docker compose --env-file=./.docker/.env up ...`
+-   `helm sh <container>` executes `docker exec -it <container> sh`
 
-### TIP: Executing the `app` shell script
+### TIP: Executing the `helm` shell script
 
-Instead of writing `bin/app ...` or `../bin/app ...`, you can create a global alias / function that executes the script for the current project.
+Instead of writing `./.docker/bin/app ...` or `../.docker/bin/app ...`, you can create a global alias / function that executes the script for the current project.
 
-For example, if we have our projects in the `~/projects` directory, we can export the following function in our `~/.bashrc` or `~/.bash_aliases` file:
+Export the following function in your `~/.bashrc` or `~/.bash_aliases` file:
 
 ```shell
-function app()
+function helm()
 {
-        project=$(echo "$PWD" | grep -oP "^$HOME/projects/[^/]+/?")
+    dir="$PWD"
 
-        if [ "$project" == "" ]; then
-                printf "You are not located in a project directory...\n"
+    while [ "$dir" != "/" ]; do
+        if [ -f "$dir/.docker/bin/helm" ]; then
+            bin="$dir/.docker/bin/helm"
+            marker=$(sed -n '3p' "$bin")
+
+            if [ "$marker" != "# [[ Docker shell helper script for the https://github.com/jeremy-step/docker-web-development template ]]" ]; then
+                printf "Incompatible helm binary found at %s.\n" "$bin"
 
                 return
+            fi
+
+            eval "$bin ${@}"
+
+            return
         fi
 
-        cmd="${project%/}/.docker/bin/app"
+        dir=$(dirname "$dir")
+    done
 
-        eval "$cmd ${@}"
-
-        return
+    printf "No project found - could not locate .docker/bin/helm in the current or any parent directory.\n"
 }
 
-export -f app
+export -f helm
 ```
 
-Now, if we execute the `app ...` command, it will automatically find the correct `~/projects/<current-project>/.docker/bin/app` shell script.
-
-Don't forget to modify the path to your projects directory based on your structure. Of course, if the `app` function name is too generic, you can change it to your liking.
+Now, if you execute the `helm ...` command, it will automatically find the correct `.docker/bin/helm` shell script for the current project.
 
 ### Containers
 
 -   `web-server` (Apache 2.4 Alpine)
 -   `application` (PHP 8.5 FPM Alpine, Node.js 24.14 - Optional)
 -   `mail` (Mailpit v1.29)
--   `database` (MySQL 9.6)
+-   `database` (MariaDB 12.2)
 -   `cache` (Redis 8.6 Alpine)
 -   `adminer` (Adminer 5.4)
