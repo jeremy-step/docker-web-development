@@ -1,20 +1,22 @@
 #!/bin/bash
 
+# [[ Docker shell helper script for the https://github.com/jeremy-step/docker-web-development template ]]
+
 usage=$(cat << EOT
 
 Usage:
 
-app up [<container>] [-d] [--build]         Start / Build container(s).
-app stop [<container>]                      Stop container(s).
-app restart [<container>]                   Restart container(s).
-app down [<container>] [-v]                 Remove container(s).
-app sh [--user root] [options] <container>  Access container shell.
-                                                - The default user is: "root".
-                                                - The default user for the "application" container is: "application".
-app composer [args]                         Use composer.
-app c        [args]                         Alias for: "app composer [args]"
-app pnpm [args]                             Use pnpm (if installed).
-app pm   [args]                             Alias for: "app pnpm [args]"
+helm up [<container>] [-d] [--wait] [--build]   Start / Build container(s).
+helm stop [<container>]                         Stop container(s).
+helm restart [<container>]                      Restart container(s).
+helm down [<container>] [-v]                    Remove container(s).
+helm sh [--user root] [options] <container>     Access container shell.
+                                                    - The default user is: "root".
+                                                    - The default user for the "application" container is: "application".
+helm composer [args]                            Use composer.
+helm c        [args]                            Alias for: "helm composer [args]"
+helm pnpm [args]                                Use pnpm (if installed).
+helm pm   [args]                                Alias for: "helm pnpm [args]"
 
 EOT
 )
@@ -101,7 +103,7 @@ fi
 if [ "$USE_SSL" == "true" ] && [ "$command" == "up" ] && [[ "${*:2}" == *"--build"* ]]; then
     options=$(echo "${@:2}" | sed s/"--build"//)
     buildOptions=$(echo $options | sed s/"-d"//)
-    
+
     # @TODO Filter build and create options, will throw error if unsupported up options are provided
     docker compose $composeOptions build $buildOptions
     docker compose $composeOptions create $buildOptions
