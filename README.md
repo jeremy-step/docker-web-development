@@ -22,7 +22,7 @@ git clone https://github.com/jeremy-step/docker-web-development.git my-new-proje
 
 ## Commands
 
-`helm` is a simple shell script located in the `.docker/bin` directory, to run basic Docker CLI commands:
+`helm` is a simple shell script located in the `.docker/bin` directory to make executing basic Docker CLI commands easier:
 
 | Command                                       | Description                                                                                                                                        |
 | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
