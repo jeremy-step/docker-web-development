@@ -8,7 +8,7 @@ $valueRedis = DateTime::createFromFormat('Y-m-d H:i:s', $clientRedis->get('previ
 
 $clientRedis->set('previous_refresh', new DateTime()->format('Y-m-d H:i:s'));
 
-$clientMysql = new PDO("mysql:dbname={$_ENV['MYSQL_DATABASE']};host={$_ENV['MYSQL_HOST']}", $_ENV['MYSQL_USER'], $_ENV['MYSQL_PASSWORD']);
+$clientMysql = new PDO("mysql:dbname={$_ENV['MYSQL_DATABASE']};host={$_ENV['MYSQL_HOST']};charset=utf8mb4", $_ENV['MYSQL_USER'], $_ENV['MYSQL_PASSWORD']);
 $clientMysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $stmt = $clientMysql->prepare(<<<'SQL'
@@ -73,7 +73,7 @@ mail('test@example.com', 'Mailpit Test Email', 'This message was sent by the PHP
     previous_refresh = <?= $valueRedis?->format('H:i:s d/m/Y') ?? 'null' ?>
 </p>
 
-<h2>MySQL example</h2>
+<h2>MariaDB example</h2>
 
 <p>
     Checkout the Adminer database manager by going to <a href="http://localhost:<?= $_ENV['ADMINER_PORT'] ?>" target="_blank">http://localhost:<?= $_ENV['ADMINER_PORT'] ?></a>
@@ -81,7 +81,7 @@ mail('test@example.com', 'Mailpit Test Email', 'This message was sent by the PHP
 
 <h3>Code:</h3>
 
-<code style="white-space: pre-wrap;"><span class="phps-v">$clientMysql</span> = <span class="phps-k">new</span> <span class="phps-f">PDO</span>(<span class="phps-s">"mysql:dbname=<span class="phps-v">{$_ENV[</span><span class="phps-a">'MYSQL_DATABASE'</span><span class="phps-v">]}</span>;host=<span class="phps-v">{$_ENV[</span><span class="phps-a">'MYSQL_HOST'</span><span class="phps-v">]}</span>"</span>, <span class="phps-v">$_ENV[</span><span class="phps-a">'MYSQL_USER'</span><span class="phps-v">]</span>, <span class="phps-v">$_ENV[</span><span class="phps-a">'MYSQL_PASSWORD'</span><span class="phps-v">]</span>);
+<code style="white-space: pre-wrap;"><span class="phps-v">$clientMysql</span> = <span class="phps-k">new</span> <span class="phps-f">PDO</span>(<span class="phps-s">"mysql:dbname=<span class="phps-v">{$_ENV[</span><span class="phps-a">'MYSQL_DATABASE'</span><span class="phps-v">]}</span>;host=<span class="phps-v">{$_ENV[</span><span class="phps-a">'MYSQL_HOST'</span><span class="phps-v">]}</span>;charset=utf8mb4"</span>, <span class="phps-v">$_ENV[</span><span class="phps-a">'MYSQL_USER'</span><span class="phps-v">]</span>, <span class="phps-v">$_ENV[</span><span class="phps-a">'MYSQL_PASSWORD'</span><span class="phps-v">]</span>);
 <span class="phps-v">$clientMysql</span>-><span class="phps-f">setAttribute</span>(<span class="phps-f">PDO</span>::ATTR_ERRMODE, <span class="phps-f">PDO</span>::ERRMODE_EXCEPTION);
 
 <span class="phps-v">$stmt</span> = <span class="phps-v">$clientMysql</span>-><span class="phps-f">prepare</span>(<span class="phps-s">&lt;&lt;&lt;'SQL'

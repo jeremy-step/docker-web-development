@@ -55,7 +55,7 @@ services:
             - "${FORWARD_MAILPIT_UI_PORT:-8025}:8025"
             - "${FORWARD_MAILPIT_SMTP_PORT:-1025}:1025"
         volumes:
-            - mailpitdata:/data
+            - mailpitdata:/data:Z
     database:
         environment:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -63,18 +63,18 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
             MYSQL_ROOT_HOST: "%"
-        image: mysql:9.6.0
+        image: mariadb:12.2.2
         ports:
             - "${FORWARD_MYSQL_PORT:-3306}:3306"
         volumes:
-            - mysqldata:/var/lib/mysql
+            - mariadbdata:/var/lib/mysql:Z
         command: [ "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci" ]
     cache:
         image: redis:8.6.2-alpine
         ports:
             - "${FORWARD_REDIS_PORT:-6379}:6379"
         volumes:
-            - redisdata:/data
+            - redisdata:/data:Z
     adminer:
         environment:
             ADMINER_DEFAULT_SERVER: "database:3306"
@@ -91,5 +91,5 @@ services:
 
 volumes:
     mailpitdata:
-    mysqldata:
+    mariadbdata:
     redisdata:
