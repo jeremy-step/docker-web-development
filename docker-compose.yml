@@ -1,7 +1,7 @@
 services:
     web-server:
         build:
-            dockerfile: ./.docker/src/httpd/Dockerfile
+            dockerfile: ./.helm/src/httpd/Dockerfile
             args:
                 - SERVER_NAME=${SERVER_NAME}
                 - USE_SSL=${USE_SSL:-false}
@@ -9,10 +9,10 @@ services:
             - "${FORWARD_SERVER_PORT:-8000}:80"
             - "${FORWARD_SERVER_PORT_SSL:-8443}:443"
         volumes:
-            - ./.docker/mount-exclude/directory:/var/www/html/.docker:ro
-            - ./.docker/mount-exclude/directory/file:/var/www/html/docker-compose.yml:ro
-            - ./.docker/mount-exclude/directory:/var/www/html/.git:ro
-            - ./.docker/mount-exclude/directory:/var/www/html/.vscode:ro
+            - ./.helm/mount-exclude/directory:/var/www/html/.helm:ro
+            - ./.helm/mount-exclude/directory/file:/var/www/html/docker-compose.yml:ro
+            - ./.helm/mount-exclude/directory:/var/www/html/.git:ro
+            - ./.helm/mount-exclude/directory:/var/www/html/.vscode:ro
             - ./:/var/www/html
     application:
         environment:
@@ -28,7 +28,7 @@ services:
             REDIS_HOST: "cache"
             REDIS_PORT: "6379"
         build:
-            dockerfile: ./.docker/src/php-fpm/Dockerfile
+            dockerfile: ./.helm/src/php-fpm/Dockerfile
             target: base
             args:
                 - UID=${UID:-1000}
@@ -36,12 +36,12 @@ services:
         ports:
             - "${FORWARD_VITE_PORT:-5173}:${FORWARD_VITE_PORT:-5173}"
         volumes:
-            - ./.docker/src/php-fpm/conf/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
-            - ./.docker/src/php-fpm/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
-            - ./.docker/mount-exclude/directory:/var/www/html/.docker:ro
-            - ./.docker/mount-exclude/directory/file:/var/www/html/docker-compose.yml:ro
-            - ./.docker/mount-exclude/directory:/var/www/html/.git:ro
-            - ./.docker/mount-exclude/directory:/var/www/html/.vscode:ro
+            - ./.helm/src/php-fpm/conf/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
+            - ./.helm/src/php-fpm/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+            - ./.helm/mount-exclude/directory:/var/www/html/.helm:ro
+            - ./.helm/mount-exclude/directory/file:/var/www/html/docker-compose.yml:ro
+            - ./.helm/mount-exclude/directory:/var/www/html/.git:ro
+            - ./.helm/mount-exclude/directory:/var/www/html/.vscode:ro
             - ./:/var/www/html
         extra_hosts:
             - "host.docker.internal:host-gateway"
@@ -87,7 +87,7 @@ services:
         ports:
             - "${FORWARD_ADMINER_PORT:-8080}:8080"
         volumes:
-            - ./.docker/src/adminer/login-default-credentials.php:/var/www/html/plugins-enabled/login-default-credentials.php
+            - ./.helm/src/adminer/login-default-credentials.php:/var/www/html/plugins-enabled/login-default-credentials.php
 
 volumes:
     mailpitdata:

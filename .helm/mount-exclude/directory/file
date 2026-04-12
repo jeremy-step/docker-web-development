@@ -5,5 +5,5 @@ For example:
 
 service:
     volumes:
-        - ./.docker/mount-exclude/directory/file:/var/www/html/docker-compose.yml:ro
-        - ./.docker/mount-exclude/directory:/var/www/html/.docker:ro
+        - ./.helm/mount-exclude/directory/file:/var/www/html/docker-compose.yml:ro
+        - ./.helm/mount-exclude/directory:/var/www/html/.helm:ro

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# [[ Docker shell helper script for the https://github.com/jeremy-step/docker-web-development template ]]
+# [[ Docker shell helper script for the https://github.com/jeremy-step/helm-web-dev template ]]
 
 usage=$(cat << EOT
 

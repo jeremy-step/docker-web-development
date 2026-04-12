@@ -6,10 +6,12 @@
 node_modules
 vendor
 .pnpm-store
-/.docker
-!/.docker/src/*/conf
-/.dockerignore
-/docker-compose.yml
 *.md
 dist
 /.ssl
+
+# Docker
+/.helm
+!/.helm/src/*/conf
+/.dockerignore
+/docker-compose.yml

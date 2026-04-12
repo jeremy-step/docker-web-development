@@ -20,7 +20,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 RUN install-php-extensions pcov pcntl bcmath pdo pdo_mysql gd intl xdebug
 
-COPY ./.docker/src/php-fpm/conf/* /usr/local/etc/php/conf.d
+COPY ./.helm/src/php-fpm/conf/* /usr/local/etc/php/conf.d
 
 FROM base AS with-node
 

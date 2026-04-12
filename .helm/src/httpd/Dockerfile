@@ -6,12 +6,12 @@ ARG SERVER_NAME
 
 WORKDIR /var/www/html/
 
-COPY ./.docker/src/httpd/conf/httpd.conf /usr/local/apache2/conf/httpd-custom.conf
+COPY ./.helm/src/httpd/conf/httpd.conf /usr/local/apache2/conf/httpd-custom.conf
 
 
 FROM ssl-false AS ssl-true
 
-COPY ./.docker/src/httpd/conf/httpd-ssl.conf /usr/local/apache2/conf/httpd-custom-ssl.conf
+COPY ./.helm/src/httpd/conf/httpd-ssl.conf /usr/local/apache2/conf/httpd-custom-ssl.conf
 
 RUN printf "\n\nInclude conf/httpd-custom-ssl.conf\n\n" >> /usr/local/apache2/conf/httpd-custom.conf && \
     apk add --update openssl && \
