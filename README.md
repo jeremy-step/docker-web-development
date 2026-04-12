@@ -1,28 +1,30 @@
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/jeremy-step/docker-web-development)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/jeremy-step/helm-web-dev)
 
-# Docker Web Dev Preset
+# Helm - Docker Web Dev Preset
 
-## Create a new project from this template repository
-
-```shell
-gh repo create my-new-project --template jeremy-step/docker-web-development --clone [--private]
-```
-
-or just clone it without creating a new repository...
+## Create a new project repository from this template via the GitHub CLI
 
 ```shell
-gh repo clone jeremy-step/docker-web-development my-new-project
+gh repo create my-new-project --template jeremy-step/helm-web-dev --clone [--private]
+
+cd my-new-project
 ```
 
-or
+> Copy the `.helm/.env.example` file and rename it to `.helm/.env`.
+
+### Or just <a href="https://raw.githubusercontent.com/jeremy-step/get-helm-web-dev/main/download.sh" target="_blank" title="See the download script">download</a> the preset
 
 ```shell
-git clone https://github.com/jeremy-step/docker-web-development.git my-new-project
+curl -s https://raw.githubusercontent.com/jeremy-step/get-helm-web-dev/main/download.sh | bash -s my-new-project
+
+cd my-new-project
 ```
+
+> This automatically creates the `.helm/.env` file for you.
 
 ## Commands
 
-`helm` is a simple shell script located in the `.docker/bin` directory to make executing basic Docker CLI commands easier:
+`helm` is a simple shell script located in the `.helm/bin` directory to make executing basic Docker CLI commands easier:
 
 | Command                                       | Description                                                                                                                                        |
 | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -38,12 +40,12 @@ git clone https://github.com/jeremy-step/docker-web-development.git my-new-proje
 
 For example:
 
--   `helm up ...` executes `docker compose --env-file=./.docker/.env up ...`
+-   `helm up ...` executes `docker compose --env-file=./.helm/.env up ...`
 -   `helm sh <container>` executes `docker exec -it <container> sh`
 
 ### TIP: Executing the `helm` shell script
 
-Instead of writing `./.docker/bin/app ...` or `../.docker/bin/app ...`, you can create a global alias / function that executes the script for the current project.
+Instead of writing `./.helm/bin/app ...` or `../.helm/bin/app ...`, you can create a global alias / function that executes the script for the current project.
 
 Export the following function in your `~/.bashrc` or `~/.bash_aliases` file:
 
@@ -53,11 +55,11 @@ function helm()
     dir="$PWD"
 
     while [ "$dir" != "/" ]; do
-        if [ -f "$dir/.docker/bin/helm" ]; then
-            bin="$dir/.docker/bin/helm"
+        if [ -f "$dir/.helm/bin/helm" ]; then
+            bin="$dir/.helm/bin/helm"
             marker=$(sed -n '3p' "$bin")
 
-            if [ "$marker" != "# [[ Docker shell helper script for the https://github.com/jeremy-step/docker-web-development template ]]" ]; then
+            if [ "$marker" != "# [[ Docker shell helper script for the https://github.com/jeremy-step/helm-web-dev template ]]" ]; then
                 printf "Incompatible helm binary found at %s.\n" "$bin"
 
                 return
@@ -71,13 +73,13 @@ function helm()
         dir=$(dirname "$dir")
     done
 
-    printf "No project found - could not locate .docker/bin/helm in the current or any parent directory.\n"
+    printf "No project found - could not locate .helm/bin/helm in the current or any parent directory.\n"
 }
 
 export -f helm
 ```
 
-Now, if you execute the `helm ...` command, it will automatically find the correct `.docker/bin/helm` shell script for the current project.
+Now, if you execute the `helm ...` command, it will automatically find the correct `.helm/bin/helm` shell script for the current project.
 
 ### Containers
 
