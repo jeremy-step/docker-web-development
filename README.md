@@ -6,17 +6,24 @@
 
 ```shell
 gh repo create my-new-project --template jeremy-step/helm-web-dev --clone [--private]
+```
 
+```shell
 cd my-new-project
 ```
 
 > Copy the `.helm/.env.example` file and rename it to `.helm/.env`.
+> ```shell
+> cp "./.helm/.env.example" "./.helm/.env"
+> ```
 
 ### Or just <a href="https://raw.githubusercontent.com/jeremy-step/get-helm-web-dev/main/download.sh" target="_blank" title="See the download script">download</a> the preset
 
 ```shell
 curl -s https://raw.githubusercontent.com/jeremy-step/get-helm-web-dev/main/download.sh | bash -s my-new-project
+```
 
+```shell
 cd my-new-project
 ```
 
