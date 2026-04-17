@@ -44,6 +44,7 @@ cd my-new-project
 | `helm c [args]`                               | Alias for: "helm composer [args]"                                                                                                                  |
 | `helm pnpm [args]`                            | Use pnpm (if installed).                                                                                                                           |
 | `helm pm [args]`                              | Alias for: "helm pnpm [args]"                                                                                                                      |
+| `helm get-ssl`                                | Copy the SSL certificate files to the project directory.                                                                                           |
 
 For example:
 
