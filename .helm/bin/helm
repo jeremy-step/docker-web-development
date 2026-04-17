@@ -14,9 +14,10 @@ helm sh [--user root] [options] <container>     Access container shell.
                                                     - The default user is: "root".
                                                     - The default user for the "application" container is: "application".
 helm composer [args]                            Use composer.
-helm c        [args]                            Alias for: "helm composer [args]"
+helm c        [args]                            Alias for: "helm composer [args]".
 helm pnpm [args]                                Use pnpm (if installed).
-helm pm   [args]                                Alias for: "helm pnpm [args]"
+helm pm   [args]                                Alias for: "helm pnpm [args]".
+helm get-ssl                                    Copy the SSL certificate files to the project directory.
 
 EOT
 )
