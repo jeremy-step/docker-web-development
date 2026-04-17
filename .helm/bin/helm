@@ -40,10 +40,10 @@ getUsage()
 if [ $# -eq 0 ]; then
     getUsage
 
-    printf "\n"
-
     exit 0
 fi
+
+printf "\n"
 
 source <(grep = $(dirname "$0")/../.env | sed 's/ *= */=/g')
 
@@ -100,14 +100,7 @@ if [ "$command" == "pm" ] || [ "$command" == "pnpm" ]; then
     exit 0
 fi
 
-if [ "$USE_SSL" == "true" ] && [ "$command" == "up" ] && [[ "${*:2}" == *"--build"* ]]; then
-    options=$(echo "${@:2}" | sed s/"--build"//)
-    buildOptions=$(echo $options | sed s/"-d"//)
-
-    # @TODO Filter build and create options, will throw error if unsupported up options are provided
-    docker compose $composeOptions build $buildOptions
-    docker compose $composeOptions create $buildOptions
-
+if [ "$USE_SSL" == "true" ] && [ "$command" == "get-ssl" ]; then
     if [ ! -d "$(dirname "$0")/../../.ssl" ]; then
         mkdir $(dirname "$0")/../../.ssl
     fi
@@ -115,9 +108,15 @@ if [ "$USE_SSL" == "true" ] && [ "$command" == "up" ] && [[ "${*:2}" == *"--buil
     docker compose $composeOptions cp web-server:/usr/local/apache2/conf/server.crt $(dirname "$0")/../../.ssl/server.crt
     docker compose $composeOptions cp web-server:/usr/local/apache2/conf/server.key $(dirname "$0")/../../.ssl/server.key
 
-    options=$(echo $options | sed s/"--no-cache"//)
+    exit 0
+elif [ "$USE_SSL" != "true" ] && [ "$command" == "get-ssl" ]; then
+    if [ "$NO_COLOR" != "" ] && [ "$FORCE_COLOR" == "" ]; then
+        printf "SSL is not enabled. Set the USE_SSL option to true in the .helm/.env file.\n"
 
-    docker compose $composeOptions up $options
+        exit 0
+    fi
+
+    printf "\e[33mSSL is not enabled. Set the \e[1;32mUSE_SSL\e[33m option to \e[1;32mtrue\e[33m in the \e[1;32m.helm/.env\e[33m file.\n"
 
     exit 0
 fi
